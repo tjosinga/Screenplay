@@ -1,0 +1,59 @@
+#!/usr/bin/env ruby
+
+$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
+
+require 'screenplay'
+require 'optparse'
+
+$SCREENPLAY_OPTIONS = {}
+
+$ARGV_PARSER = OptionParser.new { | opts |
+	opts.banner = 'Usage: screenplay command [-c|--config FILE] [-a|--actors DIR] [-s|--scenarios DIR] [-v|--verbose] [-h|--human-friendly]'
+	opts.separator('')
+
+	opts.separator('Available commands:')
+	opts.separator('- play: Plays all scenarios.')
+	opts.separator('- actors: Lists all known actors.')
+	opts.separator('- scenarios: Lists all found scenarios.')
+	opts.separator('')
+
+	opts.separator('Specific options:')
+	opts.on('-c FILE', '--config FILE', 'Filename of the configuration file.') { | f | $SCREENPLAY_CONFIGFILE = f }
+	opts.on('-a DIR', '--actors DIR', 'Directory where custom actors can be found. By default in the ./actors directory near the config file.') { | d | $SCREENPLAY_ACTORS_DIR = d }
+	opts.on('-s DIR', '--scenarios DIR', 'Directory where the scenarios can be found. By default in the ./scenarios director near the config file.') { | d | $SCREENPLAY_SCENARIOS_DIR = d }
+	opts.on('-q', '--quiet', 'Doesn\'t show the output of the scenes.') { $SCREENPLAY_OPTIONS[:quiet] = true }
+	opts.on('-h', '--human-friendly', 'Formats outputted JSON.') { $SCREENPLAY_OPTIONS[:human_friendly] = true }
+	opts.separator('')
+}
+command = $ARGV_PARSER.parse![0] rescue ''
+
+def usage
+	STDOUT << $ARGV_PARSER.help
+end
+
+def play
+	Screenplay.prepare
+	begin
+		Screenplay.run($SCREENPLAY_OPTIONS)
+	rescue Exception => e
+		abort(e.message)
+	end
+end
+
+def actors
+	Screenplay.prepare
+	Screenplay::Cast.each { | actor_name | puts actor_name }
+end
+
+def scenarios
+	Screenplay.prepare
+	Screenplay::Scenarios.each { | scenario_name, _ | puts scenario_name }
+end
+
+case command
+	when 'play' then play
+	when 'actors' then actors
+	when 'scenarios' then scenarios
+	else usage
+end
+
