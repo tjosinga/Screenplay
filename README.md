@@ -15,7 +15,7 @@ Each action gets an input object, plays its role and returns an output object. T
 ## Examples
 As an example, Screenplay can play the following scenario file (i.e. ./scenarios/simple.yml)
 
-```YAML
+```yaml
 # Lets start with some data
 - data:
     name: 'William Adama'
@@ -28,6 +28,21 @@ As an example, Screenplay can play the following scenario file (i.e. ./scenarios
       eq: 'William Adama'
     callsign:
       in: ['husker', 'starbuck']
+```
+
+When you want to use an API, first create the ./config.yml. The following example uses the free API of OpenWeatherMAP.
+```yaml
+api:
+  url: http://api.openweathermap.org/data/2.5/
+```
+
+The following scenario file just retrieves data from the weahther API, without further testing.
+./scenarios/api.yml
+```yaml
+- api:
+    path: weather
+    data:
+      q: london,uk
 ```
 
 For more examples, check the Examples folder.
