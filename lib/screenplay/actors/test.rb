@@ -4,7 +4,7 @@ module Screenplay
 
 	class TestFailedException < Exception
 		def initialize(test, a, b)
-			super("Test failed: #{test} on #{a.to_s} <=> #{b.to_s}")
+			super("#{test} on #{a.to_s} failed. Expected: #{b.to_s}.")
 		end
 	end
 
@@ -29,12 +29,12 @@ module Screenplay
 	class TestActor < Actor
 
 		def play(params, input)
-			params.each { | test, values |
-				expects = !test.to_s.start_with?('not-')
-				test = test.to_s[4..-1] unless expects
-				method = "test_#{test}".to_sym
-				raise UnknownTestException.new(test) if !respond_to?(method)
-				values.each { | key, b |
+			params.each { | key, values |
+				values.each { | test, b |
+					expects = !test.to_s.start_with?('not-')
+					test = test.to_s[4..-1] unless expects
+					method = "test_#{test}".to_sym
+					raise UnknownTestException.new(test) if !respond_to?(method)
 					raise UnknownInputKeyException.new(test, key) unless input.include?(key.to_sym)
 					a = input[key.to_sym]
 					raise TestFailedException.new(test, a, b) unless (public_send(method, a, b) == expects)

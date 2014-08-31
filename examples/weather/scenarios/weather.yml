@@ -1,4 +1,4 @@
 - api:
     path: weather
     data:
-      q: NL,Amsterdam
+      q: london,uk

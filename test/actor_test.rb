@@ -127,20 +127,21 @@ module Screenplay
 				},
 			}
 
-			assert_equal(input, @actor.play({eq: {callsign: 'husker'}}, input))
-			assert_equal(input, @actor.play({'not-eq'.to_sym => {callsign: 'starbuck'}}, input))
+			assert_equal(input, @actor.play({callsign: {eq: 'husker'}}, input))
+			assert_equal(input, @actor.play({callsign: {'not-eq'.to_sym => 'starbuck'}}, input))
 
-			assert_raises(TestFailedException) { @actor.play({'not-eq'.to_sym => {callsign: 'husker'}}, input) }
+			assert_raises(TestFailedException) { @actor.play({callsign: { 'not-eq'.to_sym => 'husker'}}, input) }
 
-			assert_raises(TestFailedException) { @actor.play({eq: {callsign: 'starbuck'}}, input) }
-			assert_raises(UnknownTestException) { @actor.play({invalid: {callsign: 'husker'}}, input) }
-			assert_raises(UnsupportedTypeTestException) { @actor.play({regexp: {callsign: true}}, input) }
-			assert_equal(input, @actor.play({size: {callsign: 6}}, input))
-			assert_raises(TestFailedException) { @actor.play({size: {callsign: 12}}, input) }
+			assert_raises(TestFailedException) { @actor.play({callsign: {eq: 'starbuck'}}, input) }
+			assert_raises(UnknownTestException) { @actor.play({callsign: {invalid: 'husker'}}, input) }
+			assert_raises(UnsupportedTypeTestException) { @actor.play({callsign: {regexp: true}}, input) }
+			assert_equal(input, @actor.play({callsign: {size: 6}}, input))
+			assert_raises(TestFailedException) { @actor.play({callsign: {size: 12}}, input) }
 
-			assert_equal(input, @actor.play({in: {callsign: ['starbuck', 'husker']}}, input))
-			assert_raises(TestFailedException) { @actor.play({in: {callsign: ['starbuck', 'apollo']}}, input) }
+			assert_equal(input, @actor.play({callsign: {in: ['starbuck', 'husker']}}, input))
+			assert_raises(TestFailedException) { @actor.play({callsign: {in: ['starbuck', 'apollo']}}, input) }
 
+			assert_equal(input, @actor.play({service_record: {size: 9}}, input))
 		end
 
 	end

@@ -1,0 +1,19 @@
+# Lets start with some data
+- data:
+    name: 'William Adama'
+    callsign: 'husker'
+    sons: ['Zak', 'Lee']
+
+# Now do some testing
+- test:
+    name:
+      eq: 'William Adama'
+    callsign:
+      in: ['husker', 'starbuck']
+      eq: 'husker'
+      # Uncomment the following line to force a fail.
+      # eq: 'starbuck'
+    sons:
+      size: 2
+      # Uncomment the following line to force a fail.
+      # size: 3
