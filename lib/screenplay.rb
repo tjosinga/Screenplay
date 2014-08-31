@@ -17,7 +17,7 @@ module Screenplay
 		Scenarios.autoload
 	end
 
-	def run(options = {})
+	def play(options = {})
 		options[:quiet] ||= false
 		options[:human_friendly] ||= false
 
