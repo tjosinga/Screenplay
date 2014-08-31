@@ -34,7 +34,7 @@ end
 def play
 	Screenplay.prepare
 	begin
-		Screenplay.run($SCREENPLAY_OPTIONS)
+		Screenplay.play($SCREENPLAY_OPTIONS)
 	rescue Exception => e
 		abort(e.message)
 	end
