@@ -28,17 +28,17 @@ module Screenplay
 			raise UnknownActorException.new(scenario_name, actor_name) if Cast.get(actor_name).nil?
 		}
 
-		each_scene { | scenario_name, actor_name, params, input, index |
-			puts "-- Scenario #{scenario_name} - Actor #{actor_name} --" unless (options[:quiet])
+		each_scene { | scenario, actor_name, params, input, index |
+			puts "##### #{scenario.name} - #{actor_name}: #####" unless (options[:quiet])
 			begin
 				output = Cast.get(actor_name).play(params, input)
 			rescue Exception => e
-				raise ScenarioFailedException.new(scenario_name, index, actor_name, e.message)
+				raise ScenarioFailedException.new(scenario, index, actor_name, e.message)
 			end
 			output.symbolize_keys!
 			unless (options[:quiet])
 				output_str = options[:human_friendly] ? JSON.pretty_generate(output) : output.to_s
-				puts "Result:\n#{output_str}"
+				puts "output = #{output_str}"
 				puts ''
 			end
 			output
@@ -46,11 +46,11 @@ module Screenplay
 	end
 
 	def each_scene
-		Scenarios.each { | scenario_name, scenario |
+		Scenarios.each { | scenario |
 			input = {}
-			index = 0
+			index = 1
 			scenario.each { | actor_name, params |
-				input = yield scenario_name, actor_name, params, input, index
+				input = yield scenario, actor_name, params, input, index
 				index += 1
 			}
 		}
