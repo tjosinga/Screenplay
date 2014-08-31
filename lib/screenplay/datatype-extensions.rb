@@ -1,6 +1,5 @@
 # encoding: utf-8
 # The classes in this file extend common datatypes with some extra functionality.
-require 'bson'
 
 # The Boolean module is used to mixin in the TrueClass and FalseClass for easy comparison.
 # This way fields can be given the Boolean datatype instead of a TrueClass or a FalseClass.
