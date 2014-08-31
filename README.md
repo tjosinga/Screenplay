@@ -5,12 +5,21 @@ The purpose of this simple Ruby application is to set up scenario's which can be
 
 A developer may define scenarios which will be played sequentially. A scenario consists of a chain of actions.
 Each action gets an input object, plays its role and returns an output object. These objects have the form of a hash or an array, or nil.
+As soon as something fails, it raises an exception and aborts the application. Therefor valid testing should play all scenarios without fails.
+
+## Features
+- Send requests to an API, either expecting correct data or errors.
+- Test the incoming data
+- Cache (parts of) incoming for later use, i.e. with another API request.
+- More to come...
+Not all features are documented on this page yet.
 
 ## Terminology
 - Screenplay: The application which plays scenarios
 - Scenarios: A Yaml file containing all actions. 
 - Actions: An action is a single thing an actor does.
 - Actor: The actor gets input data, plays its part and return an output data.
+
 
 ## Examples
 As an example, Screenplay can play the following scenario file (i.e. ./scenarios/simple.yml)
@@ -84,4 +93,76 @@ Screenplay.prepare # Automatically loads configuration, actors and scenarios
 Screenplay.play # Plays all scenarios
 ```
 
+## Actors
+### Data
+Outputs all data as written in the scenario.
 
+
+```yaml
+- data:
+    callsign: 'husker'
+    name: 'William Adama'
+```
+### Cache
+Use the cache actor to set, get or merge data.
+
+```yaml
+- cache:
+    set:
+      callsign: var_name_how_its_stored
+```
+```yaml
+- cache:
+    get:
+      var_name_how_its_stored: callsign
+```
+
+### API
+The api actor sends request to an API and outputs the result.
+```yaml
+- api:
+    path: users
+    data:
+      limit: 10
+```
+The following request posts user data in order to create a new users. In this case we expect a 403 error, because of not having the rights. If another code, like 200, will return, it raise an exception.
+```yaml
+- api:
+    path: users
+    method: post
+    data:
+      firstname: 'William'
+      lastname: 'Adama'
+    expect: 403
+```
+
+### Prompt
+For command-line purposes the prompt actor asks the user for information:
+```yaml
+- prompt:
+    username: Enter your username
+    password: Enter your password
+```
+
+### Test
+The test actor tests incoming data.
+```yaml
+- api:
+    path: users
+    data:
+      limit: 10
+```
+```yaml
+- test
+    username
+      eq: 'husker'
+```
+You can use the following tests:
+- lt
+- lte
+- eq
+- gte
+- gt
+- in
+- size
+- regexp
