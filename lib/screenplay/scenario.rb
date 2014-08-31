@@ -3,8 +3,8 @@ require 'yaml'
 module Screenplay
 
 	class ScenarioFailedException < Exception
-		def initialize(scenario_name, index, actor_name, message)
-			super("FAILED: Scenario #{scenario_name}, scene #{index}, actor #{actor_name}: #{message}")
+		def initialize(scenario, index, actor_name, message)
+			super("FAILED: Scenario #{scenario.name}, scene #{index} of #{scenario.size}, actor #{actor_name}: #{message}")
 		end
 	end
 
@@ -12,7 +12,10 @@ module Screenplay
 
 		include Enumerable
 
-		def initialize(filename)
+		attr_reader :name
+
+		def initialize(name, filename)
+			@name = name
 			@actions = YAML.load_file(filename)
 			@actions.symbolize_keys!
 		end
@@ -23,6 +26,10 @@ module Screenplay
 				data = action[actor]
 				yield actor, data
 			}
+		end
+
+		def size
+			@actions.size
 		end
 
 	end

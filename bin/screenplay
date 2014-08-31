@@ -44,12 +44,12 @@ end
 
 def actors
 	Screenplay.prepare
-	Screenplay::Cast.each { | actor_name | puts actor_name }
+	Screenplay::Cast.each { | actor | puts actor.name }
 end
 
 def scenarios
 	Screenplay.prepare
-	Screenplay::Scenarios.each { | scenario_name, _ | puts scenario_name }
+	Screenplay::Scenarios.each { | scenario | puts scenario.name }
 end
 
 case command

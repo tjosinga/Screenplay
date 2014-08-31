@@ -7,11 +7,12 @@ module Screenplay
 
 		include Enumerable
 
-		@scenarios = {}
+		@scenarios = []
 
 		def register(filename)
-			name = filename.gsub(@path, '') unless @path.empty?
-			@scenarios[name] = Scenario.new(filename)
+			name = filename.gsub(@path, '').gsub(/^\//, '') unless @path.empty?
+			@scenarios.push(Scenario.new(name, filename))
+			@scenarios.sort_by{ | actor | actor.name }
 		end
 
 		def autoload
@@ -29,7 +30,7 @@ module Screenplay
 		end
 
 		def each
-			@scenarios.each { | k, v | yield k, v }
+			@scenarios.each { | k | yield k }
 		end
 
 	end

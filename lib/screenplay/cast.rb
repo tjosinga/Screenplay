@@ -4,21 +4,25 @@ module Screenplay
 	module Cast
 		extend self
 
-		@actors = {}
+		@actors = []
 
 		include Enumerable
 
 		def register(actor)
 			raise Exception.new("Actor #{actor.name} is already registered.") if @actors.include?(actor.name)
-			@actors[actor.name.to_sym] = actor
+			@actors.push(actor)
+			@actors.sort_by!{ | actor | actor.name }
 		end
 
 		def each
-			@actors.each { | k, v | yield k, v }
+			@actors.each { | actor | yield actor }
 		end
 
-		def get(actor)
-			@actors[actor.to_sym]
+		def get(actor_name)
+			@actors.each { | actor |
+				return actor if actor.name == actor_name.to_sym
+			}
+			return nil
 		end
 
 		def autoload
