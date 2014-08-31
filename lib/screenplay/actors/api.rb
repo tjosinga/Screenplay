@@ -25,18 +25,23 @@ module Screenplay
 			path = params[:path]
 			method = params[:method].downcase.to_sym rescue :get
 			expects = (params[:expect] || 200).to_i
-			http_params = params[:params] || {} rescue {}
-			http_params = input if (http_params.is_a?(String)) && (http_params == '$input')
-			http_params.stringify_keys!
+			data = params[:data] || {} rescue {}
+			data = input if (data.is_a?(String)) && (data == '$input')
+			data.stringify_keys!
 			headers = @request_headers
 			headers[:cookie] = @cookies unless @cookies.nil?
+			url = @url + path.to_s.replace_vars(input)
+			if ([:get, :head, :delete].include?(method))
+				headers[:params] = data
+				data = {}
+			end
 
 			begin
 				response = RestClient::Request.execute({
-					url: @url + path.to_s.replace_vars(input),
+					url: url,
 					method: method,
 					headers: headers,
-					payload: http_params
+					payload: data
 				})
 			rescue => e
 				response = e.response
