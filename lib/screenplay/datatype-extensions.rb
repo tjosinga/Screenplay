@@ -38,6 +38,7 @@ class Hash
 			end
 			self[key.to_sym].symbolize_keys! if (recursive && (self[key.to_sym].is_a?(Hash) || self[key.to_sym].is_a?(Array)))
 		}
+		return self
 	end
 
 	# Changes all keys to strings.  If the value is an array or hash, it will do this recursively.
@@ -49,6 +50,7 @@ class Hash
 				self[(key.to_s rescue key) || key] = val
 			end
 		end
+		return self
 	end
 
 end
