@@ -2,25 +2,25 @@ require File.join(File.dirname(__FILE__), '..', 'actor')
 
 module Screenplay
 
-	class TestFailedException < Exception
+	class TestFailedException < StandardError
 		def initialize(test, a, b)
 			super("#{test} on #{a.to_s} failed. Expected: #{b.to_s}.")
 		end
 	end
 
-	class UnknownTestException < Exception
+	class UnknownTestException < StandardError
 		def initialize(test)
 			super("Unknown test #{test}")
 		end
 	end
 
-	class UnsupportedTypeTestException < Exception
+	class UnsupportedTypeTestException < StandardError
 		def initialize(test, a)
 			super("Unsupported data type for test #{test}: #{a.to_s}")
 		end
 	end
 
-	class UnknownInputKeyException < Exception
+	class UnknownInputKeyException < StandardError
 		def initialize(test, key)
 			super("Couldn't find #{key} in the input for test #{test}.")
 		end

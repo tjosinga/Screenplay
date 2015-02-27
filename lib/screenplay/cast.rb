@@ -9,7 +9,7 @@ module Screenplay
 		include Enumerable
 
 		def register(actor)
-			raise Exception.new("Actor #{actor.name} is already registered.") if @actors.include?(actor.name)
+			raise "Actor #{actor.name} is already registered." if @actors.include?(actor.name)
 			@actors.push(actor)
 			@actors.sort_by!{ | actor | actor.name }
 		end

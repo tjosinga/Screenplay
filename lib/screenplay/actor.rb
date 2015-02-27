@@ -3,7 +3,7 @@ require 'screenplay/configuration'
 
 module Screenplay
 
-	class MethodNotImplemented < Exception
+	class MethodNotImplemented < StandardError
 
 		def initialize(name)
 			super("Method #{name} is not implemented.")
@@ -12,7 +12,7 @@ module Screenplay
 	end
 
 
-	class UnknownActorException < Exception
+	class UnknownActorException < StandardError
 
 		def initialize(scenario, name)
 			super("The scenario #{scenario} uses unknown actor #{name}.")

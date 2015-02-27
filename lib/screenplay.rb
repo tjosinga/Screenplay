@@ -21,7 +21,7 @@ module Screenplay
 		options[:quiet] ||= false
 		options[:human_friendly] ||= false
 
-		raise Exception.new('ERROR: Couldn\'t find any scenarios to play.') if Scenarios.size == 0
+		raise 'ERROR: Couldn\'t find any scenarios to play.' if Scenarios.size == 0
 
 		# First check if we know all needed actors
 		each_scene { | scenario_name, actor_name  |
@@ -29,11 +29,12 @@ module Screenplay
 		}
 
 		each_scene { | scenario, actor_name, params, input, index |
-			puts "##### #{scenario.name} - #{actor_name}: #####" unless (options[:quiet])
+			puts "##### #{scenario.name} - #{actor_name}: #####" if !options[:quiet] && options[:show_output]
+			params ||= {}
 			begin
 				output = Cast.get(actor_name).play(params, input)
 			rescue Exception => e
-				raise ScenarioFailedException.new(scenario, index, actor_name, e.message)
+				raise ScenarioFailedException.new(scenario, index, actor_name, e)
 			end
 			output.symbolize_keys!
 			unless (options[:quiet])

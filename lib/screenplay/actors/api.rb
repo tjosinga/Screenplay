@@ -3,9 +3,9 @@ require File.join(File.dirname(__FILE__), '..', 'actor')
 
 module Screenplay
 
-	class WrongResponseCodeException < Exception
-		def initialize(expected, actual)
-			super("Expected HTTP response code #{expected}, but received #{actual}.")
+	class WrongResponseCodeException < StandardError
+		def initialize(expected, actual, body)
+			super("Expected HTTP response code #{expected}, but received #{actual}. Response body was: #{body}")
 		end
 	end
 
@@ -21,7 +21,7 @@ module Screenplay
 		end
 
 		def play(params, input)
-			raise Exception.new('Missing configuration api.url') if @url == '/'
+			raise 'Missing configuration api.url' if @url == '/'
 			path = params[:path]
 			method = params[:method].downcase.to_sym rescue :get
 			expects = (params[:expect] || 200).to_i
@@ -44,11 +44,12 @@ module Screenplay
 					payload: data
 				})
 			rescue => e
+				raise e if e.response.nil?
 				response = e.response
 			end
 
 			if response.code != expects
-				raise WrongResponseCodeException.new(expects, response.code)
+				raise WrongResponseCodeException.new(expects, response.code, response.body.to_s)
 			end
 
 			unless response.nil?

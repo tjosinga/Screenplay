@@ -2,9 +2,12 @@ require 'yaml'
 
 module Screenplay
 
-	class ScenarioFailedException < Exception
-		def initialize(scenario, index, actor_name, message)
-			super("FAILED: Scenario #{scenario.name}, scene #{index} of #{scenario.size}, actor #{actor_name}: #{message}")
+	class ScenarioFailedException < StandardError
+		attr_reader :inner_exception
+
+		def initialize(scenario, index, actor_name, exception)
+			@inner_exception = exception
+			super("FAILED: Scenario #{scenario.name}, scene #{index} of #{scenario.size}, actor #{actor_name}: #{exception.message}")
 		end
 	end
 
