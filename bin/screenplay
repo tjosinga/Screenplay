@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+$:.unshift(Dir.pwd)
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
 require 'screenplay'
@@ -22,7 +23,8 @@ $ARGV_PARSER = OptionParser.new { | opts |
 	opts.on('-a DIR', '--actors DIR', 'Directory where custom actors can be found. By default in the ./actors directory near the config file.') { | d | $SCREENPLAY_ACTORS_DIR = d }
 	opts.on('-s DIR', '--scenarios DIR', 'Directory where the scenarios can be found. By default in the ./scenarios director near the config file.') { | d | $SCREENPLAY_SCENARIOS_DIR = d }
 	opts.on('-d', '--debug', 'Shows full stack trace on when failed. Especially usefull when developing new actors or other information.') { $SCREENPLAY_OPTIONS[:debug] = true }
-	opts.on('-q', '--quiet', 'Doesn\'t show the output of the scenes.') { $SCREENPLAY_OPTIONS[:quiet] = true }
+	opts.on('-q', '--quiet', 'Doesn\'t show dots or the output of the scenes.') { $SCREENPLAY_OPTIONS[:quiet] = true }
+	opts.on('-o', '--show-output', 'Show the output of the scenes instead of dots.') { $SCREENPLAY_OPTIONS[:show_output] = true }
 	opts.on('-h', '--human-friendly', 'Formats outputted JSON.') { $SCREENPLAY_OPTIONS[:human_friendly] = true }
 	opts.separator('')
 }
@@ -36,6 +38,9 @@ def play
 	Screenplay.prepare
 	begin
 		Screenplay.play($SCREENPLAY_OPTIONS)
+	rescue Screenplay::ScenarioFailedException => e
+		raise e.inner_exception if $SCREENPLAY_OPTIONS[:debug]
+		abort(e.message)
 	rescue Exception => e
 		raise if $SCREENPLAY_OPTIONS[:debug]
 		abort(e.message)

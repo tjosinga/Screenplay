@@ -37,12 +37,17 @@ module Screenplay
 			end
 			output.symbolize_keys!
 			unless (options[:quiet])
+				if (options[:show_output])
 				output_str = options[:human_friendly] ? JSON.pretty_generate(output) : output.to_s
 				puts "output = #{output_str}"
 				puts ''
+				else
+					STDOUT << '.'
+				end
 			end
 			output
 		}
+		puts '' unless (options[:quiet])
 	end
 
 	def each_scene
