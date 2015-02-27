@@ -25,8 +25,10 @@ module Screenplay
 
 		def each
 			@actions.each { | action |
+				next if action.nil?
+				action = { action => {} } if action.is_a?(String)
 				actor = action.keys[0]
-				data = action[actor]
+				data = action[actor] || {}
 				yield actor, data
 			}
 		end
