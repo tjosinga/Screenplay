@@ -16,7 +16,7 @@ Not all features are documented on this page yet.
 
 ## Terminology
 - Screenplay: The application which plays scenarios
-- Scenarios: A Yaml file containing all actions. 
+- Scenarios: A Yaml file containing all actions.
 - Actions: An action is a single thing an actor does.
 - Actor: The actor gets input data, plays its part and return an output data.
 
@@ -58,7 +58,7 @@ For more examples, check the Examples folder.
 
 ## Installation
 ```bash
-gem install screenplay 
+gem install screenplay
 ```
 
 ## Usage
@@ -109,12 +109,12 @@ Use the cache actor to set, get or merge data.
 ```yaml
 - cache:
     set:
-      callsign: var_name_how_its_stored
+      var_name_how_its_stored: callsign
 ```
 ```yaml
 - cache:
     get:
-      var_name_how_its_stored: callsign
+      callsign: var_name_how_its_stored
 ```
 
 ### API
@@ -154,7 +154,7 @@ The test actor tests incoming data.
 ```
 ```yaml
 - test
-    username
+    username:
       eq: 'husker'
 ```
 You can use the following tests:

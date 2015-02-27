@@ -15,11 +15,11 @@ module Screenplay
 				if action == :clear
 					@cache.clear
 				elsif action == :set
-					values.each { | input_key, cache_key |
-						@cache[cache_key.to_sym] = (input_key == '$input'.to_sym) ? input : input[input_key]
+					values.each { | cache_key, input_key  |
+						@cache[cache_key.to_sym] = (input_key == '$input'.to_sym) ? input : input[input_key.to_sym]
 					}
 				elsif (action == :merge || action == :get)
-					values.each { | cache_key, input_key |
+					values.each { | input_key, cache_key |
 						output[input_key.to_sym] = @cache[cache_key.to_sym]
 					}
 				end
