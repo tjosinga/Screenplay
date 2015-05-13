@@ -22,7 +22,7 @@ Not all features are documented on this page yet.
 
 
 ## Examples
-As an example, Screenplay can play the following scenario file (i.e. ./scenarios/simple.yml)
+As an example, Screenplay can play the following scenario file (i.e. ./scenarios/simple.yaml)
 
 ```yaml
 # Lets start with some data
@@ -39,14 +39,14 @@ As an example, Screenplay can play the following scenario file (i.e. ./scenarios
       in: ['husker', 'starbuck']
 ```
 
-When you want to use an API, first create the ./config.yml. The following example uses the free API of OpenWeatherMAP.
+When you want to use an API, first create the ./config.yaml. The following example uses the free API of OpenWeatherMAP.
 ```yaml
 api:
   url: http://api.openweathermap.org/data/2.5/
 ```
 
 The following scenario file just retrieves data from the weahther API, without further testing.
-./scenarios/api.yml
+./scenarios/api.yaml
 ```yaml
 - api:
     path: weather
@@ -65,9 +65,9 @@ gem install screenplay
 
 ### Command-line
 Use the command-line tool screenplay to play your scenarios. The tool searches for the followings files:
-- ./config.yml        # For configuration purposes.
-- ./scenarios/*.yml   # The scenarios to play.
-- ./actors/*.rb       # Custom actors. These will be loaded automatically.
+- ./config.yaml        # For configuration purposes.
+- ./scenarios/*.yaml   # The scenarios to play.
+- ./actors/*.rb        # Custom actors. These will be loaded automatically.
 
 The command-line tool has the following commands
 ```bash

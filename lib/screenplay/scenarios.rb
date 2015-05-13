@@ -21,7 +21,7 @@ module Screenplay
 		end
 
 		def load_path(path)
-			yml_files = File.join(path, '**', '*.yml')
+			yml_files = File.join(path, '**', '*.{yaml,yml}')
 			Dir[yml_files].each { | filename | register(filename) }
 		end
 
