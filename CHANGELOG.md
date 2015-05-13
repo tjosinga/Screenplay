@@ -1,3 +1,6 @@
+## Version 0.1.3
+- Changes extensions of Yaml files to .yaml, keeping support for .yml. 
+
 ## Version 0.1.2
 - Updates the error handling.
 - Updates the Cache actor.
