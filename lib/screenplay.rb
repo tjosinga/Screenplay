@@ -43,7 +43,7 @@ module Screenplay
 			output.symbolize_keys!
 			unless (@options[:quiet])
 				if (@options[:show_output])
-					puts "output = " + @options[:human_friendly] ? JSON.pretty_generate(output) : output.to_s
+					puts 'output = ' + (@options[:human_friendly] ? JSON.pretty_generate(output) : output).to_s
 					puts ''
 				else
 					STDOUT << '.'
