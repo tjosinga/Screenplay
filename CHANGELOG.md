@@ -1,3 +1,6 @@
+##Version 0.1.4
+- Adds Screenplay.options, which makes it possible for actors to know the given Screenplay options.
+
 ## Version 0.1.3
 - Changes extensions of Yaml files to .yaml, keeping support for .yml. 
 

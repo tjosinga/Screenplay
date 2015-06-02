@@ -1,7 +1,7 @@
 Gem::Specification.new { | gem |
 	gem.name            = 'screenplay'
-	gem.version         = '0.1.3'
-	gem.date            = '2015-05-13'
+	gem.version         = '0.1.4'
+	gem.date            = '2015-06-02'
 	gem.summary         = 'Screenplay'
 	gem.description     = 'Screenplay helps with testing data driven applications like RESTful API\'s by writing scenario\'s in Yaml.'
 	gem.authors         = ['Taco Jan Osinga']
