@@ -1,3 +1,6 @@
+##Version 0.1.5
+- Fixes a minor bug.
+
 ##Version 0.1.4
 - Adds Screenplay.options, which makes it possible for actors to know the given Screenplay options.
 
