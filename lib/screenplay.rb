@@ -11,6 +11,8 @@ require 'screenplay/scenarios'
 module Screenplay
 	extend self
 
+	attr_reader :options
+
 	def prepare
 		Configuration.load
 		Cast.autoload
@@ -18,8 +20,10 @@ module Screenplay
 	end
 
 	def play(options = {})
-		options[:quiet] ||= false
-		options[:human_friendly] ||= false
+		@options = options
+		@options[:quiet] ||= false
+		@options[:human_friendly] ||= false
+		@options[:show_output] = @options[:show_output] && !@options[:quiet]
 
 		raise 'ERROR: Couldn\'t find any scenarios to play.' if Scenarios.size == 0
 
@@ -29,7 +33,7 @@ module Screenplay
 		}
 
 		each_scene { | scenario, actor_name, params, input, index |
-			puts "##### #{scenario.name} - #{actor_name}: #####" if !options[:quiet] && options[:show_output]
+			puts "##### #{scenario.name} - #{actor_name}: #####" if !@options[:quiet] && @options[:show_output]
 			params ||= {}
 			begin
 				output = Cast.get(actor_name).play(params, input)
@@ -37,18 +41,17 @@ module Screenplay
 				raise ScenarioFailedException.new(scenario, index, actor_name, e)
 			end
 			output.symbolize_keys!
-			unless (options[:quiet])
-				if (options[:show_output])
-				output_str = options[:human_friendly] ? JSON.pretty_generate(output) : output.to_s
-				puts "output = #{output_str}"
-				puts ''
+			unless (@options[:quiet])
+				if (@options[:show_output])
+					puts "output = " + @options[:human_friendly] ? JSON.pretty_generate(output) : output.to_s
+					puts ''
 				else
 					STDOUT << '.'
 				end
 			end
 			output
 		}
-		puts '' unless (options[:quiet])
+		puts '' unless @options[:quiet]
 	end
 
 	def each_scene
